@@ -43,12 +43,13 @@ abstract class BotDetectorService
     public function getWrapperURL()
     {
         if ( $url_from_bd = $this->loadWrapperURL() ) {
-            return htmlspecialchars($url_from_bd, ENT_QUOTES);
+            return htmlspecialchars($url_from_bd, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         }
 
         return htmlspecialchars(
             sprintf("https://%s/%s", self::BD_DEFAULT_DOMAIN, self::BD_DEFAULT_SCRIPT_NAME),
-            ENT_QUOTES
+            ENT_QUOTES | ENT_SUBSTITUTE,
+            'UTF-8'
         );
     }
 
