@@ -33,7 +33,7 @@ abstract class BotDetectorService
     abstract public function saveWrapperURL($wrapper_url);
 
     /**
-     * @return string
+     * @return string|false
      */
     abstract public function loadWrapperURL();
 
