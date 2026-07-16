@@ -18,24 +18,24 @@ abstract class BotDetectorService
      * @param string $api_key
      * @return string|false
      */
-    abstract function callAPIMethod($api_key);
+    abstract public function callAPIMethod($api_key);
 
     /**
      * @param string $wrapper_url
      * @return bool
      */
-    abstract function isWrapperAvailable($wrapper_url);
+    abstract public function isWrapperAvailable($wrapper_url);
 
     /**
      * @param string $wrapper_url
      * @return void
      */
-    abstract function saveWrapperURL($wrapper_url);
+    abstract public function saveWrapperURL($wrapper_url);
 
     /**
      * @return string
      */
-    abstract function loadWrapperURL();
+    abstract public function loadWrapperURL();
 
     /**
      * @return string
@@ -47,8 +47,8 @@ abstract class BotDetectorService
         }
 
         return htmlspecialchars(
-            sprintf("https://%s/%s", self::BD_DEFAULT_DOMAIN, self::BD_DEFAULT_SCRIPT_NAME)
-            , ENT_QUOTES
+            sprintf("https://%s/%s", self::BD_DEFAULT_DOMAIN, self::BD_DEFAULT_SCRIPT_NAME),
+            ENT_QUOTES
         );
     }
 
