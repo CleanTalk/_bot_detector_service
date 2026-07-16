@@ -1,0 +1,98 @@
+<?php
+
+namespace Cleantalk\Common\BotDetectorService;
+
+abstract class BotDetectorService
+{
+    const METHOD_NAME = "get_bot_detector_wrapper_url";
+
+    const BD_DEFAULT_DOMAIN = "fd.cleantalk.org";
+
+    const BD_DEFAULT_SCRIPT_NAME = "ct-bot-detector-wrapper.js";
+
+    const CALL_PERIOD = 3600;
+
+    const OPTION_NAME = "bot_detector_wrapper_url";
+
+    /**
+     * @param string $api_key
+     * @return string|false
+     */
+    abstract function callAPIMethod($api_key);
+
+    /**
+     * @param string $wrapper_url
+     * @return bool
+     */
+    abstract function isWrapperAvailable($wrapper_url);
+
+    /**
+     * @param string $wrapper_url
+     * @return void
+     */
+    abstract function saveWrapperURL($wrapper_url);
+
+    /**
+     * @return string
+     */
+    abstract function loadWrapperURL();
+
+    /**
+     * @return string
+     */
+    public function getWrapperURL()
+    {
+        if ( $url_from_bd = $this->loadWrapperURL() ) {
+            return htmlspecialchars($url_from_bd, ENT_QUOTES);
+        }
+
+        return htmlspecialchars(
+            sprintf("https://%s/%s", self::BD_DEFAULT_DOMAIN, self::BD_DEFAULT_SCRIPT_NAME)
+            , ENT_QUOTES
+        );
+    }
+
+    /**
+     * @param string $api_key
+     * @return void
+     */
+    public function updateWrapperURL($api_key)
+    {
+        $url_from_api = $this->callAPIMethod($api_key);
+        if ( ! $this->validateWrapperURL($url_from_api) ) {
+            return;
+        }
+        if ( ! $this->isWrapperAvailable($url_from_api) ) {
+            return;
+        }
+        if ( ! $this->validateWrapperContent($url_from_api) ) {
+            return;
+        }
+
+        $url_from_bd = $this->loadWrapperURL();
+
+        if ( $url_from_api !== $url_from_bd ) {
+            $this->saveWrapperURL($url_from_api);
+        }
+    }
+
+    /**
+     * @param string $wrapper_url
+     * @return bool
+     */
+    private function validateWrapperURL($wrapper_url)
+    {
+        return (bool) preg_match("/^https?:\/\/.*cleantalk\..*/", $wrapper_url);
+    }
+
+    /**
+     * @param $wrapper_url
+     * @return bool
+     */
+    private function validateWrapperContent($wrapper_url)
+    {
+        // 1) Get content from $wrapper_url
+        // 2) Validate this
+        return true;
+    }
+}
