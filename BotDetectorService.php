@@ -82,7 +82,21 @@ abstract class BotDetectorService
      */
     private function validateWrapperURL($wrapper_url)
     {
-        return (bool) preg_match("/^https?:\/\/.*cleantalk\..*/", $wrapper_url);
+        if ( ! is_string($wrapper_url) || $wrapper_url === '' ) {
+            return false;
+        }
+        $parts = parse_url($wrapper_url);
+        if ( empty($parts['scheme']) || empty($parts['host']) ) {
+            return false;
+        }
+        $scheme = strtolower($parts['scheme']);
+        if ( $scheme !== 'https' && $scheme !== 'http' ) {
+            return false;
+        }
+        $host = strtolower($parts['host']);
+
+        // Allow cleantalk.<domain> and subdomains like fd.cleantalk.org
+        return (bool) preg_match('/(^|\.)cleantalk\.[a-z0-9-]{2,}$/', $host);
     }
 
     /**
