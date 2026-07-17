@@ -13,6 +13,13 @@
             "Cleantalk\\Common\\BotDetectorService\\": "/"
         }
     },
+    "require": {
+        "cleantalk/http": "*",
+        "cleantalk/templates": "*",
+        "cleantalk/api": "*",
+        "cleantalk/mloader": "*"
+
+    },
     "require-dev": {
         "vimeo/psalm": "^4.8",
         "phpunit/phpunit": "^8.5.52",
