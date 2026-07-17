@@ -2,9 +2,13 @@
 
 namespace Cleantalk\Common\BotDetectorService;
 
+use Cleantalk\Common\BotDetectorService\Api\Api;
+use Cleantalk\Common\Mloader\Mloader;
+use Cleantalk\Common\Templates\Singleton;
+
 abstract class BotDetectorService
 {
-    const METHOD_NAME = "get_bot_detector_wrapper_url";
+    use Singleton;
 
     const BD_DEFAULT_DOMAIN = "fd.cleantalk.org";
 
@@ -18,13 +22,26 @@ abstract class BotDetectorService
      * @param string $api_key
      * @return string|false
      */
-    abstract public function callAPIMethod($api_key);
+    public function callAPIMethod($api_key)
+    {
+        return Api::methodGetBotDetectorWrapperUrl($api_key);
+    }
 
     /**
      * @param string $wrapper_url
      * @return bool
      */
-    abstract public function isWrapperAvailable($wrapper_url);
+    public function isWrapperAvailable($wrapper_url)
+    {
+        $request_class = Mloader::get('Http\Request');
+        $http = new $request_class();
+
+        $response = $http->setUrl($wrapper_url)
+            ->setPresets(['get_code'])
+            ->request();
+
+        return 200 === $response;
+    }
 
     /**
      * @param string $wrapper_url

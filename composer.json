@@ -14,7 +14,11 @@
         }
     },
     "require": {
-        "cleantalk/http": "*"
+        "cleantalk/http": "*",
+        "cleantalk/templates": "*",
+        "cleantalk/api": "*",
+        "cleantalk/mloader": "*"
+
     },
     "require-dev": {
         "vimeo/psalm": "^4.8",
