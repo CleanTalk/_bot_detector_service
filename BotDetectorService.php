@@ -42,7 +42,8 @@ abstract class BotDetectorService
      */
     public function getWrapperURL()
     {
-        if ( $url_from_bd = $this->loadWrapperURL() ) {
+        $url_from_bd = $this->loadWrapperURL();
+        if ( $url_from_bd ) {
             return htmlspecialchars($url_from_bd, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         }
 
